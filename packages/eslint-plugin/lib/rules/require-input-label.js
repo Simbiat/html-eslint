@@ -22,10 +22,12 @@ const SELF_LABELING_INPUT_TYPES = new Set(["button", "reset", "submit"]);
  * Walks the whole document collecting `for` attribute values
  * from <label for="..."> elements, so inputs anywhere in the
  * document can be matched against them.
+ * @param {any} root
  */
 function collectLabelForTargets(root) {
   const targets = new Set();
 
+  /** @param {any} node */
   function walk(node) {
     if (!node || typeof node !== "object") {
       return;
@@ -120,7 +122,7 @@ module.exports = {
           }
 
           if (
-            SELF_LABELING_INPUT_TYPES.has(typeValue) &&
+            SELF_LABELING_INPUT_TYPES.has(typeValue ?? "") &&
             hasNonWhitespaceValue(valueAttr)
           ) {
             return;
