@@ -43,6 +43,9 @@ function collectLabelForTargets(root) {
       }
     }
     const children = node.children || node.body || [];
+    if (!children || typeof children !== "object") {
+      return;
+    }
     for (const child of children) {
       walk(child);
     }
