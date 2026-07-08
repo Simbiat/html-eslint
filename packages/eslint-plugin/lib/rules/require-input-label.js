@@ -46,6 +46,7 @@ function collectLabelForTargets(root) {
         }
       }
     }
+
     if (!("children" in node)) {
       return;
     }
