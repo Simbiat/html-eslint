@@ -20,7 +20,7 @@ module.exports = {
 
 ## Rule Details
 
-Empty elements that are expected to carry meaning are flagged. The following elements are checked: `h1–h6`, `p`, `a`, `button`, `li`, `dt`, `dd`, `option`, `label`. For `option` elements inside a `datalist` content will be required only if `value` attribute is missing, empty or whitestring.
+Empty elements that are expected to carry meaning are flagged. The following elements are checked: `h1–h6`, `p`, `a`, `button`, `li`, `dt`, `dd`, `option`, `label`. For `option` elements inside a `datalist` content will be required only if `value` attribute is missing, empty or whitespace-only.
 
 Examples of **incorrect** code for this rule:
 

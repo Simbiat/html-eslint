@@ -56,11 +56,15 @@ function isAttributesEmpty(node) {
 }
 
 /**
- * True if the attribute exists and its value is non-empty and not only whitespace.
+ * True if the attribute exists and its value is non-empty and not only
+ * whitespace.
+ *
  * @param {Tag["attributes"][number] | undefined} attrName
  */
 function hasNonWhitespaceValue(attrName) {
-  return Boolean(attrName?.value?.value && attrName.value.value.trim().length > 0);
+  return Boolean(
+    attrName?.value?.value && attrName.value.value.trim().length > 0
+  );
 }
 
 /**
