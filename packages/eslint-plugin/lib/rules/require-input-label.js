@@ -1,11 +1,20 @@
 /**
- * @import {Tag} from "@html-eslint/types"
+ * @import {
+ *   AnyNode,
+ *   Document,
+ *   Tag
+ * } from "@html-eslint/types"
  * @import {RuleModule} from "../types"
  */
 
 const { RULE_CATEGORY } = require("../constants");
 const { createVisitors } = require("./utils/visitors");
-const { findParent, isTag, getNameOf, hasNonWhitespaceValue } = require("./utils/node");
+const {
+  findParent,
+  isTag,
+  getNameOf,
+  hasNonWhitespaceValue,
+} = require("./utils/node");
 const { getRuleUrl } = require("./utils/rule");
 
 const MESSAGE_IDS = {
@@ -18,16 +27,11 @@ const LABEL_ATTRIBUTES = new Set(["aria-labelledby", "aria-label"]);
 
 const SELF_LABELING_INPUT_TYPES = new Set(["button", "reset", "submit"]);
 
-/**
- * Walks the whole document collecting `for` attribute values
- * from <label for="..."> elements, so inputs anywhere in the
- * document can be matched against them.
- * @param {any} root
- */
+/** @param {Document} root */
 function collectLabelForTargets(root) {
   const targets = new Set();
 
-  /** @param {any} node */
+  /** @param {AnyNode} node */
   function walk(node) {
     if (!node || typeof node !== "object") {
       return;
@@ -42,10 +46,11 @@ function collectLabelForTargets(root) {
         }
       }
     }
-    const children = node.children || node.body || [];
-    if (!children || typeof children !== "object") {
+    if (!("children" in node)) {
       return;
     }
+    const { children } = node;
+
     for (const child of children) {
       walk(child);
     }
@@ -74,9 +79,17 @@ module.exports = {
     },
   },
   create(context) {
-    const labelForTargets = collectLabelForTargets(context.sourceCode.ast);
+    /** @type {Set<string>[]} */
+    const stack = [];
     return createVisitors(context, {
+      Document(node) {
+        stack.push(collectLabelForTargets(node));
+      },
+      "Document:exit"() {
+        stack.pop();
+      },
       Tag(node) {
+        const labelForTargets = stack[stack.length - 1] ?? new Set();
         const tagName = getNameOf(node);
         if (!INPUT_TAGS.has(tagName)) {
           return;

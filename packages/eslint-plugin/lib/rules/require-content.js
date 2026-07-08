@@ -7,7 +7,14 @@
  */
 
 const { RULE_CATEGORY } = require("../constants");
-const { findAttr, findParent, isTag, isText, getNameOf, hasNonWhitespaceValue } = require("./utils/node");
+const {
+  findAttr,
+  findParent,
+  isTag,
+  isText,
+  getNameOf,
+  hasNonWhitespaceValue,
+} = require("./utils/node");
 const { createVisitors } = require("./utils/visitors");
 const { getRuleUrl } = require("./utils/rule");
 
