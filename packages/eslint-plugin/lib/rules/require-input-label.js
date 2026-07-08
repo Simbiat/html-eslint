@@ -42,12 +42,13 @@ function collectLabelForTargets(root) {
         }
       }
     }
-    const children = node.children || node.body || [];
-    if (!children || typeof children !== "object") {
-      return;
-    }
-    for (const child of children) {
-      walk(child);
+    node.children ?? node.body;
+    if (Array.isArray(children)) {
+      for (const child of children) {
+        walk(child);
+      }
+    } else if (children && typeof children === "object") {
+      walk(children);
     }
   }
 
